@@ -184,6 +184,12 @@ def generate_android(metric):
     print "Old school way to call up/down script from openvpn client. " \
           "use the regular openvpn 2.1 method to add routes if it's possible"
 
+def generate_sshuttle():
+    results = fetch_ip_data()
+    file=open('chn-subnet','w')
+    for ip,_,mask in results:
+        file.write('%s/%d\n'%(ip,mask))
+    file.close()
 
 def fetch_ip_data():
     #fetch data from apnic
@@ -249,6 +255,8 @@ if __name__=='__main__':
         generate_win(args.metric)
     elif args.platform.lower() == 'android':
         generate_android(args.metric)
+    elif args.platform.lower() == 'sshuttle':
+        generate_sshuttle()
     else:
         print>>sys.stderr, "Platform %s is not supported."%args.platform
         exit(1)
